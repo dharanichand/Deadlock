@@ -40,7 +40,82 @@
   --font: 'Inter', sans-serif;
   --mono: 'JetBrains Mono', monospace;
   --nav-h: 64px;
+  /* Canvas bg used in JS */
+  --canvas-bg: #080f1f;
 }
+
+/* ---- Light Theme ---- */
+body.theme-light {
+  --bg-900: #f0f4ff;
+  --bg-800: #e4eaf8;
+  --bg-700: #d8e2f5;
+  --bg-600: #ccd6f0;
+  --bg-500: #bfcaeb;
+  --bg-card: #ffffff;
+  --text-100: #0d1525;
+  --text-200: #2a3a5c;
+  --text-300: #4a5c80;
+  --text-400: #7080a4;
+  --border: rgba(79,142,247,0.2);
+  --border-bright: rgba(79,142,247,0.5);
+  --glow: 0 0 24px rgba(79,142,247,0.2);
+  --canvas-bg: #e8eef8;
+}
+body.theme-light #navbar {
+  background: rgba(240,244,255,0.95) !important;
+  border-bottom-color: rgba(79,142,247,0.2);
+}
+body.theme-light #navbar.scrolled {
+  background: rgba(240,244,255,0.99) !important;
+}
+body.theme-light .modal-box {
+  background: var(--bg-700);
+}
+body.theme-light .topic-modal-body code {
+  background: var(--bg-600);
+  color: #0d6e49;
+}
+body.theme-light .hero-section {
+  background: linear-gradient(135deg, #e8eef8 0%, #dde6f7 100%);
+}
+body.theme-light #ragCanvas,
+body.theme-light #wfgCanvas,
+body.theme-light #bankersAnimCanvas,
+body.theme-light .example-rag-svg {
+  background: #e8eef8 !important;
+  border-color: rgba(79,142,247,0.25);
+}
+body.theme-light .btn-ghost {
+  background: rgba(79,142,247,0.08);
+  color: var(--text-200);
+  border-color: var(--border);
+}
+body.theme-light ::-webkit-scrollbar-track { background: var(--bg-700); }
+
+/* ---- Theme Toggle Button ---- */
+.theme-toggle-btn {
+  background: none;
+  border: 1.5px solid var(--border-bright);
+  border-radius: 20px;
+  padding: 5px 13px;
+  color: var(--text-200);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: var(--font);
+}
+.theme-toggle-btn:hover {
+  background: rgba(79,142,247,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.theme-toggle-btn .toggle-icon { font-size: 1rem; transition: transform 0.4s; }
+body.theme-light .theme-toggle-btn .toggle-icon { transform: rotate(180deg); }
 
 html { scroll-behavior: smooth; }
 body {
@@ -165,17 +240,8 @@ body {
 .deadlock-alert { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: var(--danger); animation: blink 1.5s ease-in-out infinite; }
 @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.5; } }
 
-/* ---- Progress Tracker ---- */
-.progress-tracker {
-  position: fixed; bottom: 20px; right: 20px; z-index: 900;
-  background: var(--bg-card); border: 1px solid var(--border-bright);
-  border-radius: var(--radius); padding: 14px 18px;
-  min-width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-}
-.pt-title { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-.pt-bar-wrap { background: var(--bg-600); border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: 6px; }
-.pt-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 4px; transition: width 0.5s ease; }
-.pt-label { font-size: 0.78rem; color: var(--text-300); }
+/* Progress Tracker hidden (removed sticky bar) */
+.progress-tracker { display: none !important; }
 
 /* ---- Sections ---- */
 .section { padding: 90px 60px; }
@@ -719,44 +785,15 @@ body {
   .mobile-nav-btn.spa-nav-active { background: rgba(79,142,247,0.18); border-color: var(--accent); color: var(--accent); }
 }
 
-/* =====================================================
-   Banker's Algorithm – Animated Step Visualizer
-   ===================================================== */
-.bankers-anim-canvas-wrap {
-  background: var(--bg-card); border: 1px solid var(--border-bright);
-  border-radius: var(--radius); padding: 20px; margin-top: 20px;
-  display: none;
-}
-.bankers-anim-canvas-wrap.visible { display: block; }
-#bankersAnimCanvas {
-  width: 100%; border-radius: 8px;
-  background: #080f1f; display: block;
-}
-.bankers-anim-controls {
-  display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center;
-}
-.bankers-anim-status {
-  flex: 1; font-size: 0.85rem; color: var(--text-200);
-  background: var(--bg-700); border-radius: 6px; padding: 8px 14px;
-  font-family: var(--mono);
-}
-
-/* =====================================================
-   RAG – Animated Pulse / Flow Indicators
-   ===================================================== */
-.rag-anim-overlay {
-  position: absolute; top: 0; left: 0; pointer-events: none;
-  width: 100%; height: 100%;
-}
+/* RAG – Animated Pulse / Flow Indicators */
+.rag-anim-overlay { position: absolute; top: 0; left: 0; pointer-events: none; width: 100%; height: 100%; }
 .rag-canvas-area { position: relative; }
 
-/* =====================================================
-   Example cards – inline SVG RAG diagrams
-   ===================================================== */
+/* Example cards – inline SVG RAG diagrams */
 .example-rag-svg {
-  width: 100%; max-width: 340px; height: auto;
-  display: block; margin: 10px auto 0;
-  border-radius: 8px;
+  width: 100%; max-width: 400px; height: auto;
+  display: block; margin: 12px auto 0;
+  border-radius: 10px;
   background: #080f1f;
   border: 1px solid var(--border);
 }
@@ -766,6 +803,8 @@ body {
   color: var(--text-200);
   line-height: 1.7;
 }
+
+/* RAG pulse on deadlock edges */
 
 /* Banker's animated table highlights */
 .matrix-table td.anim-highlight {
@@ -783,6 +822,80 @@ body {
   background: rgba(239,68,68,0.15) !important;
   color: var(--danger) !important;
   transition: background 0.3s;
+}
+
+/* Banker's safe sequence animated display */
+.safe-sequence-display .seq-proc {
+  animation: seqAppear 0.4s ease both;
+}
+@keyframes seqAppear {
+  from { opacity: 0; transform: scale(0.6) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Banker anim canvas wrap */
+.bankers-anim-canvas-wrap {
+  background: var(--bg-card); border: 1px solid var(--border-bright);
+  border-radius: var(--radius); padding: 20px; margin-top: 20px;
+  display: none;
+}
+.bankers-anim-canvas-wrap.visible { display: block; animation: fadeInUp 0.4s ease; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#bankersAnimCanvas {
+  width: 100%; border-radius: 8px;
+  background: #080f1f; display: block;
+}
+.bankers-anim-controls {
+  display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center;
+}
+.bankers-anim-status {
+  flex: 1; font-size: 0.85rem; color: var(--text-200);
+  background: var(--bg-700); border-radius: 6px; padding: 8px 14px;
+  font-family: var(--mono);
+  animation: statusPulse 0.3s ease;
+}
+@keyframes statusPulse {
+  from { opacity: 0.5; }
+  to   { opacity: 1; }
+}
+
+/* Deadlock detection log entry animations */
+.log-entry {
+  animation: logSlide 0.25s ease both;
+}
+@keyframes logSlide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Det solver result animation */
+.solver-result {
+  animation: resultPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+@keyframes resultPop {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* WFG canvas deadlock pulse overlay */
+.wfg-result.deadlock-res {
+  animation: dlPulse 1.5s ease-in-out infinite;
+}
+@keyframes dlPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+  50%     { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+}
+
+/* Example card reveal animation */
+.example-reveal.active {
+  animation: revealSlide 0.35s ease both;
+}
+@keyframes revealSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* RAG pulse on deadlock edges */
@@ -825,6 +938,9 @@ body {
     <button class="nav-page-btn active" id="btnMain" onclick="switchPage('main')">Main Site</button>
     <button class="nav-page-btn" id="btnDet" onclick="switchPage('detection')"><i class="fas fa-microscope"></i> Detection Lab</button>
   </div>
+  <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle light/dark theme">
+    <span class="toggle-icon">🌙</span><span id="themeLabel">Dark</span>
+  </button>
 </nav>
 
 <!-- ============ MAIN PAGE ============ -->
@@ -2223,8 +2339,10 @@ const RAG = {
     const ctx = this.ctx;
     const W = this.canvas.width, H = this.canvas.height;
     ctx.clearRect(0, 0, W, H);
-
-    // Background grid
+    // Theme-aware background
+    const bg = this.canvasBg || '#080f1f';
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
     ctx.strokeStyle = 'rgba(79,142,247,0.04)';
     ctx.lineWidth = 1;
     for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
@@ -2822,7 +2940,7 @@ const Bankers = {
         <div style="margin-bottom:8px;font-weight:700;color:var(--text-200)">Safe Sequence:</div>
         <div class="safe-sequence-display">
           ${result.safeSeq.map((s,i) => `
-            <div class="seq-proc">P${s}</div>
+            <div class="seq-proc" style="animation-delay:${i*120}ms">P${s}</div>
             ${i < result.safeSeq.length-1 ? '<div class="seq-arrow">→</div>' : ''}
           `).join('')}
         </div>`;
@@ -2854,12 +2972,38 @@ const Bankers = {
 
   showLog(log) {
     const el = document.getElementById('bankersLogContent');
-    el.innerHTML = log.map((entry, i) => `
-      <div class="log-entry ${entry.type}">
-        <span class="log-step-num">${String(i+1).padStart(2,'0')}.</span>
-        <span>${entry.msg}</span>
-      </div>`).join('');
-    el.scrollTop = el.scrollHeight;
+    el.innerHTML = '';
+    // Animate log entries in sequence
+    log.forEach((entry, i) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = `log-entry ${entry.type}`;
+        div.style.animationDelay = '0ms';
+        div.innerHTML = `<span class="log-step-num">${String(i+1).padStart(2,'0')}.</span><span>${entry.msg}</span>`;
+        el.appendChild(div);
+        el.scrollTop = el.scrollHeight;
+        // Highlight the corresponding need-table row if it's a step entry
+        const pidMatch = entry.msg.match(/P(\d+)/);
+        if (pidMatch && (entry.type === 'step' || entry.type === 'success' || entry.type === 'fail')) {
+          const pid = parseInt(pidMatch[1]);
+          this._flashNeedRow(pid, entry.type);
+        }
+      }, i * 120);
+    });
+  },
+
+  _flashNeedRow(pid, type) {
+    const needTbl = document.getElementById('needTable');
+    if (!needTbl) return;
+    const rows = needTbl.querySelectorAll('tr');
+    if (rows[pid + 1]) {
+      const cells = rows[pid + 1].querySelectorAll('td');
+      const cls = type === 'success' ? 'anim-success' : type === 'fail' ? 'anim-fail' : 'anim-highlight';
+      cells.forEach(td => {
+        td.classList.add(cls);
+        setTimeout(() => td.classList.remove(cls), 800);
+      });
+    }
   },
 
   clearResult() {
@@ -2879,13 +3023,19 @@ const Bankers = {
     if (this.stepIdx < this.stepData.log.length) {
       const entry = this.stepData.log[this.stepIdx];
       const el = document.getElementById('bankersLogContent');
-      el.innerHTML += `<div class="log-entry ${entry.type}">
-        <span class="log-step-num">${String(this.stepIdx+1).padStart(2,'0')}.</span>
-        <span>${entry.msg}</span>
-      </div>`;
+      const div = document.createElement('div');
+      div.className = `log-entry ${entry.type}`;
+      div.innerHTML = `<span class="log-step-num">${String(this.stepIdx+1).padStart(2,'0')}.</span><span>${entry.msg}</span>`;
+      el.appendChild(div);
       el.scrollTop = el.scrollHeight;
-      this.stepIdx++;
 
+      // Flash corresponding row
+      const pidMatch = entry.msg.match(/P(\d+)/);
+      if (pidMatch && (entry.type === 'step' || entry.type === 'success' || entry.type === 'fail')) {
+        this._flashNeedRow(parseInt(pidMatch[1]), entry.type);
+      }
+
+      this.stepIdx++;
       if (this.stepIdx === this.stepData.log.length) {
         this.showResult(this.stepData);
       }
@@ -5687,16 +5837,44 @@ const DetSolver = {
 
   run() {
     const result=this.detect();
-    this.showLog(result.log);
-    const el=document.getElementById('detResult');
-    el.style.display='block';
-    if(result.deadlocked.length===0) {
-      el.className='solver-result safe';
-      el.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:2rem">✅</div><div><div style="font-size:1.1rem;font-weight:800;color:var(--accent3)">NO DEADLOCK</div><div style="color:var(--text-200)">All ${this.n} processes can complete successfully.</div></div></div>`;
-    } else {
-      el.className='solver-result deadlock';
-      el.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:2rem">💀</div><div><div style="font-size:1.1rem;font-weight:800;color:var(--danger)">DEADLOCK DETECTED</div><div style="color:var(--text-200)">Deadlocked processes: <strong style="color:var(--danger)">P${result.deadlocked.join(', P')}</strong></div></div></div>`;
-    }
+    // Animate log entries
+    const el=document.getElementById('detLog');
+    el.innerHTML='';
+    result.log.forEach((e,i)=>{
+      setTimeout(()=>{
+        const div=document.createElement('div');
+        div.className=`log-entry ${e.type}`;
+        div.innerHTML=`<span class="log-step-num">${i+1}.</span><span>${e.msg}</span>`;
+        el.appendChild(div);
+        el.scrollTop=el.scrollHeight;
+        // Flash allocation table row
+        const pidMatch=e.msg.match(/P(\d+)/);
+        if(pidMatch&&(e.type==='step'||e.type==='success'||e.type==='fail')){
+          const pid=parseInt(pidMatch[1]);
+          const tbl=document.getElementById('detAllocTable');
+          if(tbl){
+            const rows=tbl.querySelectorAll('tr');
+            if(rows[pid+1]){
+              const cells=rows[pid+1].querySelectorAll('td');
+              const cls=e.type==='success'?'anim-success':e.type==='fail'?'anim-fail':'anim-highlight';
+              cells.forEach(td=>{td.classList.add(cls);setTimeout(()=>td.classList.remove(cls),700);});
+            }
+          }
+        }
+      }, i*110);
+    });
+    // Show result after animation
+    setTimeout(()=>{
+      const resEl=document.getElementById('detResult');
+      resEl.style.display='block';
+      if(result.deadlocked.length===0) {
+        resEl.className='solver-result safe';
+        resEl.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:2rem">✅</div><div><div style="font-size:1.1rem;font-weight:800;color:var(--accent3)">NO DEADLOCK</div><div style="color:var(--text-200)">All ${this.n} processes can complete successfully.</div></div></div>`;
+      } else {
+        resEl.className='solver-result deadlock';
+        resEl.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:2rem">💀</div><div><div style="font-size:1.1rem;font-weight:800;color:var(--danger)">DEADLOCK DETECTED</div><div style="color:var(--text-200)">Deadlocked processes: <strong style="color:var(--danger)">P${result.deadlocked.join(', P')}</strong></div></div></div>`;
+      }
+    }, result.log.length*110+200);
     this.stepLog=result.log; this.stepIdx=0;
   },
 
@@ -5705,12 +5883,43 @@ const DetSolver = {
       const result=this.detect();
       this.stepLog=result.log; this.stepIdx=0;
       document.getElementById('detLog').innerHTML='';
+      document.getElementById('detResult').style.display='none';
     }
     if(this.stepIdx<this.stepLog.length) {
       const e=this.stepLog[this.stepIdx++];
       const el=document.getElementById('detLog');
-      el.innerHTML+=`<div class="log-entry ${e.type}"><span class="log-step-num">${this.stepIdx}.</span><span>${e.msg}</span></div>`;
+      const div=document.createElement('div');
+      div.className=`log-entry ${e.type}`;
+      div.innerHTML=`<span class="log-step-num">${this.stepIdx}.</span><span>${e.msg}</span>`;
+      el.appendChild(div);
       el.scrollTop=el.scrollHeight;
+      // Flash row
+      const pidMatch=e.msg.match(/P(\d+)/);
+      if(pidMatch){
+        const pid=parseInt(pidMatch[1]);
+        const tbl=document.getElementById('detAllocTable');
+        if(tbl){
+          const rows=tbl.querySelectorAll('tr');
+          if(rows[pid+1]){
+            const cells=rows[pid+1].querySelectorAll('td');
+            const cls=e.type==='success'?'anim-success':e.type==='fail'?'anim-fail':'anim-highlight';
+            cells.forEach(td=>{td.classList.add(cls);setTimeout(()=>td.classList.remove(cls),700);});
+          }
+        }
+      }
+      // Show result at end
+      if(this.stepIdx===this.stepLog.length){
+        const result=this.detect();
+        const resEl=document.getElementById('detResult');
+        resEl.style.display='block';
+        if(result.deadlocked.length===0){
+          resEl.className='solver-result safe';
+          resEl.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:2rem">✅</div><div><div style="font-size:1.1rem;font-weight:800;color:var(--accent3)">NO DEADLOCK</div><div style="color:var(--text-200)">All ${this.n} processes can complete successfully.</div></div></div>`;
+        } else {
+          resEl.className='solver-result deadlock';
+          resEl.innerHTML=`<div style="display:flex;align-items:center;gap:12px"><div style="font-size:2rem">💀</div><div><div style="font-size:1.1rem;font-weight:800;color:var(--danger)">DEADLOCK DETECTED</div><div style="color:var(--text-200)">Deadlocked: <strong style="color:var(--danger)">P${result.deadlocked.join(', P')}</strong></div></div></div>`;
+        }
+      }
     }
   },
 
@@ -6690,12 +6899,16 @@ function renderWFGSvg(data) {
   const procs = data.processes;
   const edges = data.edges;
   const n = procs.length;
-  const W = 320, H = 160;
-  const cx = W / 2, cy = H / 2;
-  const r = Math.min(W, H) * 0.34;
-  const nodeR = Math.min(22, Math.max(16, 200 / n));
 
-  // Compute positions
+  // Dynamic sizing based on node count
+  const W = 380;
+  const H = Math.max(200, n <= 4 ? 200 : n <= 6 ? 230 : 260);
+  const cx = W / 2, cy = H / 2;
+  // Radius of circle layout — keep nodes away from edges
+  const r = Math.min(W * 0.36, H * 0.36);
+  const nodeR = n <= 4 ? 22 : n <= 6 ? 19 : 16;
+
+  // Compute node positions on a circle
   const pos = {};
   procs.forEach((p, i) => {
     const angle = (2 * Math.PI * i / n) - Math.PI / 2;
@@ -6725,34 +6938,67 @@ function renderWFGSvg(data) {
   }
   procs.forEach(p=>{if(!visited[p])dfs(p,[p]);});
 
-  // SVG edges
+  // Build a set of reverse-edge pairs for offset
+  const edgeSet = new Set(edges.map(([f,t])=>f+'→'+t));
+
+  // SVG edges — use quadratic curves for bidirectional edges
   let edgeSvg = '';
   edges.forEach(([f,t]) => {
     const fp = pos[f], tp = pos[t];
     if (!fp||!tp) return;
     const isDL = deadlocked.has(f) && deadlocked.has(t);
     const color = isDL ? '#ef4444' : '#4f8ef7';
+    const lineW = isDL ? 2.2 : 1.7;
+
     const dx = tp.x-fp.x, dy = tp.y-fp.y;
     const dist = Math.hypot(dx,dy)||1;
     const ux=dx/dist, uy=dy/dist;
+
+    // Adjust start/end to be at circle border
     const x1=fp.x+ux*nodeR, y1=fp.y+uy*nodeR;
     const x2=tp.x-ux*nodeR, y2=tp.y-uy*nodeR;
-    // Check for reverse edge
-    const hasRev = edges.some(([a,b])=>a===t&&b===f);
-    let px1=x1,py1=y1,px2=x2,py2=y2;
-    if (hasRev) {
-      const perp = {x:-uy*7, y:ux*7};
-      px1+=perp.x; py1+=perp.y; px2+=perp.x; py2+=perp.y;
+
+    const hasRev = edgeSet.has(t+'→'+f);
+
+    let pathD;
+    if (f === t) {
+      // Self-loop
+      const lx = fp.x + nodeR * 0.7;
+      const ly = fp.y - nodeR * 0.7;
+      pathD = `M ${fp.x+nodeR*0.5} ${fp.y-nodeR*0.5} C ${lx+18} ${ly-18}, ${lx+24} ${ly+10}, ${fp.x+nodeR*0.5} ${fp.y+nodeR*0.3}`;
+    } else if (hasRev) {
+      // Curved arc to separate bidirectional edges
+      const mx = (x1+x2)/2 - uy*18;
+      const my = (y1+y2)/2 + ux*18;
+      pathD = `M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+    } else {
+      pathD = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
     }
-    const aLen=9, aAng=0.45;
-    const angle=Math.atan2(py2-py1,px2-px1);
-    edgeSvg += `<line x1="${px1.toFixed(1)}" y1="${py1.toFixed(1)}" x2="${px2.toFixed(1)}" y2="${py2.toFixed(1)}" stroke="${color}" stroke-width="${isDL?2.2:1.6}" ${isDL?'stroke-dasharray="0"':''}/>`;
-    // arrowhead
-    const ax1=px2-aLen*Math.cos(angle-aAng), ay1=py2-aLen*Math.sin(angle-aAng);
-    const ax2=px2-aLen*Math.cos(angle+aAng), ay2=py2-aLen*Math.sin(angle+aAng);
-    edgeSvg += `<polygon points="${px2.toFixed(1)},${py2.toFixed(1)} ${ax1.toFixed(1)},${ay1.toFixed(1)} ${ax2.toFixed(1)},${ay2.toFixed(1)}" fill="${color}"/>`;
+
+    const strokeDash = isDL ? '' : 'stroke-dasharray="none"';
+    edgeSvg += `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="${lineW}" ${isDL?'filter="url(#dlGlow)"':''}/>`;
+
+    // Arrowhead at end point (t)
+    let endX = x2, endY = y2, angle;
+    if (f === t) {
+      endX = fp.x + nodeR*0.5; endY = fp.y + nodeR*0.3;
+      angle = Math.PI * 0.8;
+    } else if (hasRev) {
+      const mx = (x1+x2)/2 - uy*18;
+      const my = (y1+y2)/2 + ux*18;
+      angle = Math.atan2(endY - my, endX - mx);
+    } else {
+      angle = Math.atan2(endY-y1, endX-x1);
+    }
+    const aLen=8, aAng=0.45;
+    const ax1=endX-aLen*Math.cos(angle-aAng), ay1=endY-aLen*Math.sin(angle-aAng);
+    const ax2=endX-aLen*Math.cos(angle+aAng), ay2=endY-aLen*Math.sin(angle+aAng);
+    edgeSvg += `<polygon points="${endX.toFixed(1)},${endY.toFixed(1)} ${ax1.toFixed(1)},${ay1.toFixed(1)} ${ax2.toFixed(1)},${ay2.toFixed(1)}" fill="${color}" ${isDL?'filter="url(#dlGlow)"':''}/>`;
+
     if (isDL) {
-      edgeSvg += `<circle cx="${((px1+px2)/2).toFixed(1)}" cy="${((py1+py2)/2).toFixed(1)}" r="3" fill="${color}" opacity="0.7"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/></circle>`;
+      const mx2 = f===t ? fp.x+nodeR+8 : (x1+x2)/2 - (hasRev?uy*18:0);
+      const my2 = f===t ? fp.y-nodeR-8 : (y1+y2)/2 + (hasRev?ux*18:0);
+      edgeSvg += `<circle cx="${mx2.toFixed(1)}" cy="${my2.toFixed(1)}" r="3" fill="${color}" opacity="0.7"><animate attributeName="opacity" values="0.3;1;0.3" dur="1s" repeatCount="indefinite"/></circle>`;
     }
   });
 
@@ -6761,25 +7007,34 @@ function renderWFGSvg(data) {
   procs.forEach(p => {
     const {x,y} = pos[p];
     const isDL = deadlocked.has(p);
-    const fill = isDL ? 'rgba(239,68,68,0.25)' : 'rgba(79,142,247,0.2)';
+    const fill = isDL ? 'rgba(239,68,68,0.22)' : 'rgba(79,142,247,0.18)';
     const stroke = isDL ? '#ef4444' : '#4f8ef7';
     const textCol = isDL ? '#ef4444' : '#e2e8f0';
-    nodeSvg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${nodeR}" fill="${fill}" stroke="${stroke}" stroke-width="${isDL?2.2:1.8}">`;
-    if (isDL) nodeSvg += `<animate attributeName="stroke-width" values="1.8;3;1.8" dur="1.4s" repeatCount="indefinite"/>`;
+    const strokeW = isDL ? 2.2 : 1.8;
+    nodeSvg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${nodeR}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeW}" ${isDL?'filter="url(#dlGlow)"':''}>`;
+    if (isDL) nodeSvg += `<animate attributeName="r" values="${nodeR};${nodeR+2};${nodeR}" dur="1.2s" repeatCount="indefinite"/>`;
     nodeSvg += `</circle>`;
-    nodeSvg += `<text x="${x.toFixed(1)}" y="${(y+5).toFixed(1)}" text-anchor="middle" fill="${textCol}" font-size="${nodeR>18?12:10}" font-weight="bold" font-family="Inter,sans-serif">${p}</text>`;
+    const fontSize = nodeR >= 20 ? 11 : 10;
+    nodeSvg += `<text x="${x.toFixed(1)}" y="${(y+fontSize*0.4).toFixed(1)}" text-anchor="middle" fill="${textCol}" font-size="${fontSize}" font-weight="700" font-family="Inter,sans-serif">${p}</text>`;
   });
 
   const hasCycle = deadlocked.size > 0;
   const statusText = hasCycle ? '⚠ Cycle Detected' : '✓ No Cycle';
   const statusColor = hasCycle ? '#ef4444' : '#10b981';
 
-  return `<svg class="example-rag-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-    <rect width="${W}" height="${H}" fill="#080f1f" rx="8"/>
-    <rect width="${W}" height="${H}" fill="none" stroke="rgba(79,142,247,0.15)" stroke-width="1" rx="8"/>
+  return `<svg class="example-rag-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:${W}px;">
+    <defs>
+      <filter id="dlGlow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="2.5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <rect width="${W}" height="${H}" fill="#080f1f" rx="10"/>
+    <rect width="${W}" height="${H}" fill="none" stroke="rgba(79,142,247,0.12)" stroke-width="1" rx="10"/>
     ${edgeSvg}${nodeSvg}
-    <text x="${W-8}" y="${H-6}" text-anchor="end" fill="${statusColor}" font-size="9" font-family="Inter,sans-serif" font-weight="600">${statusText}</text>
-    <text x="8" y="14" fill="rgba(79,142,247,0.5)" font-size="9" font-family="Inter,sans-serif">Wait-For Graph</text>
+    <rect x="${W-120}" y="${H-20}" width="112" height="16" rx="4" fill="rgba(0,0,0,0.4)"/>
+    <text x="${W-64}" y="${H-9}" text-anchor="middle" fill="${statusColor}" font-size="9.5" font-family="Inter,sans-serif" font-weight="700">${statusText}</text>
+    <text x="10" y="15" fill="rgba(79,142,247,0.55)" font-size="9" font-family="Inter,sans-serif" font-weight="600">Wait-For Graph</text>
   </svg>
   <div class="example-data"><em>${data.description}</em></div>`;
 }
@@ -6816,7 +7071,40 @@ RAG.draw = function() {
   this.animFrame = requestAnimationFrame(() => this.draw());
 };
 
-// ---- Keyboard shortcuts ----
+// ---- Theme Toggle ----
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('theme-light');
+  const label = document.getElementById('themeLabel');
+  const icon = document.querySelector('.theme-toggle-btn .toggle-icon');
+  if (isLight) {
+    label.textContent = 'Light';
+    icon.textContent = '☀️';
+  } else {
+    label.textContent = 'Dark';
+    icon.textContent = '🌙';
+  }
+  // Redraw canvases with correct background
+  const canvasBg = isLight ? '#e8eef8' : '#080f1f';
+  if (typeof RAG !== 'undefined' && RAG.ctx) { RAG.canvasBg = canvasBg; RAG.draw(); }
+  if (typeof WFG !== 'undefined' && WFG.ctx) { WFG.canvasBg = canvasBg; WFG.draw(); }
+  // Persist preference
+  try { localStorage.setItem('dlm_theme', isLight ? 'light' : 'dark'); } catch(e) {}
+}
+// Restore theme on load
+try {
+  const savedTheme = localStorage.getItem('dlm_theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('theme-light');
+    document.addEventListener('DOMContentLoaded', () => {
+      const label = document.getElementById('themeLabel');
+      const icon = document.querySelector('.theme-toggle-btn .toggle-icon');
+      if (label) label.textContent = 'Light';
+      if (icon) icon.textContent = '☀️';
+    });
+  }
+} catch(e) {}
+
+
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
@@ -6847,4 +7135,4 @@ document.querySelectorAll('.topic-card, .algo-card, .example-card').forEach(el =
 });
 </script>
 </body>
-</html>
+  </html>
